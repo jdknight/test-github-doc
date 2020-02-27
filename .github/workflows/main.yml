@@ -36,7 +36,7 @@ jobs:
         rsync -av --delete --exclude '.git' --exclude '.doctrees' _build/html/ gh-pages/
         cd gh-pages
         git add -A
-6
+
         if [ -n "$(git status --porcelain)" ]; then
             git config --local user.email "noreply@jdknight.me"
             git config --local user.name "GitHub Action"
