@@ -27,31 +27,25 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        sphinx-build --version
+        echo "building new content..."
         cd Documentation
-
-        echo "buiilding new content..."
         sphinx-build -b html . _build/html -E -a
 
-        echo "adding new content..."
+        echo "synchronizing new content..."
         git worktree add gh-pages gh-pages
-        
-        find gh-pages/
-        
         rsync -av --delete --exclude '.git' --exclude '.doctrees' _build/html/ gh-pages/
         cd gh-pages
         git add -A
-        git config --local user.email "noreply@jdknight.me"
-        git config --local user.name "GitHub Action"
-        git commit -a -m "update"
 
-        echo "adjusting url..."
-        git remote set-url --push origin https://jdknight:$GITHUB_TOKEN@github.com/jdknight/test-github-doc
-        
-        find .
-        
-        echo "pushing new content..."
-        git push origin gh-pages
+        if [ -n "$(git status --porcelain)" ]; then
+            git config --local user.email "noreply@jdknight.me"
+            git config --local user.name "GitHub Action"
+            git commit -a -m "update"
+
+            echo "adjusting url..."
+            git remote set-url --push origin https://jdknight:$GITHUB_TOKEN@github.com/jdknight/test-github-doc
+            echo "pushing new content..."
+            git push origin gh-pages
+        fi
 
         echo "done"
-        
