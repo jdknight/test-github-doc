@@ -36,7 +36,7 @@ jobs:
         rsync -av --delete --exclude '.git' --exclude '.doctrees' _build/html/ gh-pages/
         cd gh-pages
         git add -A
-
+6
         if [ -n "$(git status --porcelain)" ]; then
             git config --local user.email "noreply@jdknight.me"
             git config --local user.name "GitHub Action"
@@ -46,6 +46,7 @@ jobs:
             git remote set-url --push origin https://jdknight:$GITHUB_TOKEN@github.com/jdknight/test-github-doc
             echo "pushing new content..."
             git push origin gh-pages
+            echo "done"
+        else
+            echo "no new changes"
         fi
-
-        echo "done"
