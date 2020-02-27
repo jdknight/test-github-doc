@@ -35,6 +35,9 @@ jobs:
 
         echo "adding new content..."
         git worktree add gh-pages gh-pages
+        
+        find gh-pages/
+        
         rsync -avz --delete --exclude '.doctrees' _build/html/ gh-pages/
         cd gh-pages
         git add -A
@@ -45,5 +48,10 @@ jobs:
         echo "adjusting url..."
         git remote set-url --push origin https://jdknight:$GITHUB_TOKEN@github.com/jdknight/test-github-doc
         
+        find .
+        
         echo "pushing new content..."
         git push origin gh-pages
+
+        echo "done"
+        
