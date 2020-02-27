@@ -24,6 +24,8 @@ jobs:
         pip install sphinx
 
     - name: Run sphinx-build
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         sphinx-build --version
         cd Documentation
@@ -39,6 +41,9 @@ jobs:
         git config --local user.email "noreply@jdknight.me"
         git config --local user.name "GitHub Action"
         git commit -a -m "update"
+
+        echo "adjusting url..."
+        git remote set-url --push origin https://jdknight:$GITHUB_TOKEN@github.com/jdknight/test-github-doc
         
         echo "pushing new content..."
         git push origin gh-pages
